@@ -13,7 +13,6 @@ nltk.download('punkt')
 from nltk.corpus import stopwords
 import os
 from nltk.tokenize import word_tokenize
-import re
 
 
 nlp = spacy.load('en_core_web_sm')
