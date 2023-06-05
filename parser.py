@@ -192,16 +192,7 @@ def extract_resume_category(resume_text):
     return predicted_category
 
 
-
-
-@app.route('/', )
-def index():
-    return 'Hello, Flask!'
-
-
-@app.route('/extractor', methods=['POST'])
-def extractor():
-    file = request.files['resume']
+def extract_resume_data(file):
     ext = os.path.splitext(file.filename)[1][1:].lower()
 
     if ext == "docx":
@@ -221,7 +212,7 @@ def extractor():
         text = " ".join(text.split('\n'))
         os.remove(file_path)
     else:
-        return jsonify({'error': 'Invalid file format'})
+        return {'error': 'Invalid file format'}
 
     email = extract_email(text)
     text = clean_text(text)
@@ -238,7 +229,23 @@ def extractor():
         'category': category
     }
 
+    return result
+
+
+
+@app.route('/', )
+def index():
+    return 'Hello, Flask!'
+
+
+@app.route('/extractor', methods=['POST'])
+def extractor():
+    file = request.files['resume']
+    result = extract_resume_data(file)
     return jsonify(result)
+
+
+
 
 if __name__ == '__main__':
     app.run()
